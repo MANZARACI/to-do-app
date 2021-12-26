@@ -1,0 +1,49 @@
+<% layout(`./layouts/boilerplate`) %> 
+
+<% for(let todo of todos) {%> 
+<div class="card mb-3 col-lg-8 offset-lg-2">
+    <h5 class="card-header"><%= todo.title %> </h5>
+    
+    <div class="card-body">
+        <% if(todo.description.length > 0) {%> 
+        <div class="row">
+            <div class="col-10">
+                <p class="card-text"><%= todo.description %> </p>
+            </div>
+            <div class="col-1">
+                <form action="/todos/<%= todo._id %>/changeIsDone?_method=PUT" method="POST">
+                    <input type="checkbox" class="isDone" id="<%= todo._id %>" <% if(todo.isDone) {%> checked <% } %> >
+                </form>
+            </div>
+        </div>
+        <hr>
+        <% } %> 
+        <div class="hstack">
+            <p class="my-0" style="display: inline-block;"><small><strong>Deadline:</strong> <%= (todo.deadline.getMonth()+1)+'-'+todo.deadline.getDate()+'-'+todo.deadline.getFullYear() %></small> <small><strong>Date Added:</strong> <%= (todo.dateAdded.getMonth()+1)+'-'+todo.dateAdded.getDate()+'-'+todo.dateAdded.getFullYear() %></small></p>  
+            <% if(!todo.description.length > 0) {%> 
+                <div class="ms-auto me-2 me-md-3">
+                    <form action="/todos/<%= todo._id %>/changeIsDone?_method=PUT" method="POST">
+                        <input type="checkbox" class="isDone" id="<%= todo._id %>" <% if(todo.isDone) {%> checked <% } %>>
+                    </form>
+                </div>
+            <% } else {%>
+                <div class="ms-auto"></div>
+            <% } %> 
+            <a href="/todos/<%= todo._id %>/edit" class=" me-1 me-md-3 btn btn-primary">Edit</a>
+            <form action="/todos/<%= todo._id %>?_method=DELETE" method="POST">
+                <button class="me-md-3 btn btn-danger">Delete</button>
+            </form>
+             
+        </div>
+    </div>
+</div>
+<% } %>
+
+<script src="/javascripts/isDone.js"></script>
+
+<style>
+    input.isDone {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+</style>
